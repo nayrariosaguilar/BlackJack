@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/GAME"
+
+        android:title="partida"
+        app:showAsAction="never" />
+    <item android:id="@+id/SETTINGS"
+        android:title="configuración"
+        app:showAsAction="never"/>
+    <item android:id="@+id/ABOUT"
+        android:title="Sobre mi"
+        app:showAsAction="never"/>
+    <item android:id="@+id/QUIT"
+        android:title="salir"
+        app:showAsAction="never"/>
+    <item android:id="@+id/HISTORIAL"
+        android:title="Ultima partida"
+        app:showAsAction="never"/>
+</menu>

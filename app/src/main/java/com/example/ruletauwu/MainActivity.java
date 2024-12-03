@@ -10,7 +10,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,8 +24,12 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.app.AlertDialog;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -56,12 +64,76 @@ public class MainActivity extends AppCompatActivity {
         initializeComponents();
         initializeListeners();
         startNewGame();
-        //assigning ID of the toolbar to a variable
-        Toolbar toolbar= (Toolbar) findViewById (R.id.toolbar);
+        View myView = findViewById(R.id.aboutme);
+        registerForContextMenu(myView);
+        Toolbar mytoolbar= (Toolbar) findViewById(R.id.toolbar);
         //using toolbar as ActionBar
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mytoolbar);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if (item.getItemId() == R.id.GAME) {
+           startNewGame();
+        } else if (item.getItemId() == R.id.SETTINGS) {
+
+        } else if (item.getItemId() == R.id.ABOUT) {
+            showMyPhoto();
+        } else if (item.getItemId() == R.id.QUIT) {
+            showDialogConfirmation();
+        } else if(item.getItemId() == R.id.HISTORIAL){
+          mostrarUltimaPartida();
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void mostrarUltimaPartida() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Historial ultima partida");
+        //TODO
+    }
+
+    private void showMyPhoto()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Sobre el autor");
+        builder.setMessage("Aplicación hecha por Nayra Rios");
+        //builder.setIcon();
+        //ImageView image = (ImageView)
+            //    dialog.findViewById(R.id.image);
+        //image.setImageResource(R.drawable.ic_launcher);
+        AlertDialog alert= builder.create();
+        alert.show();
 
     }
+    private void showDialogConfirmation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Salir");
+        builder.setMessage("Estas seguro que quieres salir");
+        builder.setCancelable(false);
+        builder.setPositiveButton("no", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.setNegativeButton("si", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finishAffinity();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
 
     private void initializeComponents() {
         playerScoreText = findViewById(R.id.player_score_text);

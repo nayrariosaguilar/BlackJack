@@ -21,7 +21,6 @@ import androidx.appcompat.widget.Toolbar;
 import org.w3c.dom.Text;
 
 public class settings extends MainActivity {
-
     private RadioGroup radioGroup;
     private CheckBox checkBox;
     private SeekBar seekBar;
@@ -37,7 +36,6 @@ public class settings extends MainActivity {
         setContentView(R.layout.layout_menu);
         initializeComponents();
         initializeListeners();
-
     }
 
     private void initializeComponents() {
