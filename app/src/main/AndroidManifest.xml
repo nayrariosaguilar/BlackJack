@@ -30,6 +30,7 @@
                 <action android:name="android.intent.action.BATTERY_LOW" />
             </intent-filter>
         </receiver>
+        <service android:name=".MyServiceNotification" />
     </application>
 
 </manifest>

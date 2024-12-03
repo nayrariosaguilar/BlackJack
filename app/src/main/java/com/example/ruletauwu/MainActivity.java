@@ -64,11 +64,13 @@ public class MainActivity extends AppCompatActivity {
         initializeComponents();
         initializeListeners();
         startNewGame();
-        View myView = findViewById(R.id.aboutme);
-        registerForContextMenu(myView);
+        //View myView = findViewById(R.id.aboutme);
+       // registerForContextMenu(myView);
         Toolbar mytoolbar= (Toolbar) findViewById(R.id.toolbar);
         //using toolbar as ActionBar
         setSupportActionBar(mytoolbar);
+       // startService(new Intent()); TODO
+
     }
 
     @Override
