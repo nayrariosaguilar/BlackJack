@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="title_blackjack" type="id"></item>
+    <item name="dealer_label" type="id"></item>
+    <item name="button_card" type="id"></item>
+    <item name="button_stand" type="id"></item>
+    <item name="player_score_text" type="id"></item>
+    <item name="player_score_container" type="id"></item>
+    <item name="player_card4" type="id"></item>
+</resources>

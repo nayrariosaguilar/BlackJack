@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Ruletauwu</string>
+    <string name="black">BLACK</string>
+    <string name="jack">JACK</string>
+    <string name="dealer">Dealer</string>
+    <string name="dealer2">Dealer</string>
+    <string name="player_score_background">Player Score Background</string>
+    <string name="_9_19">9/19</string>
+    <string name="stand">Stand</string>
+    <string name="_500">500</string>
+    <string name="_5">5</string>
+    <string name="card">Card</string>
+    <string name="bet">Bet</string>
+    <string name="money">Money</string>
+    <string name="player">Player</string>
+    <string name="make_your_bet">MAKE YOUR BET!</string>
+    <string name="_4">4</string>
+    <string name="dealer24">Dealer</string>
+    <string name="black_jack">BLACK JACK</string>
+</resources>

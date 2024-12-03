@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background">
+
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    />
+    <!-- Título del Juego -->
+    <TextView
+        android:id="@+id/title_blackjack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/black_jack"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_gravity="center"/>
+
+    <!-- Etiqueta para Dealer -->
+    <TextView
+        android:id="@+id/dealer_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dealer24"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center"/>
+
+    <!-- Área de cartas del Dealer con cuatro espacios vacíos -->
+    <LinearLayout
+        android:id="@+id/dealer_cards_area"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFD700"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/dealer_card1"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="dealer_card_space"/>
+
+        <ImageView
+            android:id="@+id/dealer_card2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="dealer_card_space"/>
+
+        <ImageView
+            android:id="@+id/dealer_card3"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="dealer_card_space"/>
+
+        <ImageView
+            android:id="@+id/dealer_card4"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="dealer_card_space"/>
+
+        <ImageView
+            android:id="@+id/dealer_card5"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="dealer_card_space"/>
+
+
+
+    </LinearLayout>
+
+    <!-- Puntuación del Dealer -->
+    <FrameLayout
+        android:id="@+id/dealer_score_container"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/border_yellow" />
+
+        <TextView
+            android:id="@+id/dealer_score_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
+
+    <!-- Texto de instrucciones para el jugador -->
+    <TextView
+        android:id="@+id/mensaje_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/make_your_bet"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"/>
+
+    <!-- Etiqueta para el Jugador -->
+    <TextView
+        android:id="@+id/player_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/player"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"/>
+
+    <!-- Sección para mostrar el Dinero y Apuesta -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/money_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Dinero:"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/money_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/_500"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- Sección de Apuesta -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/score_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Apuesta:"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/bet_value"
+            android:inputType="number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- Área de cartas del Jugador con cuatro espacios vacíos -->
+    <LinearLayout
+        android:id="@+id/player_cards_area"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFD700"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/player_card1"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="player_card_space"/>
+
+        <ImageView
+            android:id="@+id/player_card2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="player_card_space"/>
+
+        <ImageView
+            android:id="@+id/player_card3"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="player_card_space"/>
+
+        <ImageView
+            android:id="@+id/player_card4"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="player_card_space"/>
+
+        <ImageView
+            android:id="@+id/player_card5"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:contentDescription="player_card_space"/>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/player_score_container"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/border_yellow"/>
+
+        <TextView
+            android:id="@+id/player_score_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_9_19"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <!-- Botones para "Stand" y "Card" -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/button_stand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Plantarse"
+            android:layout_weight="1"
+            android:backgroundTint="#C0C0C0"/>
+        <Button
+            android:id="@+id/button_restart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Restart"
+            android:layout_weight="1"
+            android:backgroundTint="#C0C0C0"/>
+        <Button
+            android:id="@+id/button_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Carta"
+            android:layout_weight="1"
+            android:backgroundTint="#C0C0C0"/>
+    </LinearLayout>
+</LinearLayout>
