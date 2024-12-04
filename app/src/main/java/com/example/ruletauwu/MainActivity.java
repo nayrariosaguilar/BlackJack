@@ -33,6 +33,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,13 +60,14 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver br = new BaterryLow();
     IntentFilter filter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_LOW);
-        this.registerReceiver(br, filter);
+
         initializeComponents();
         initializeListeners();
         startNewGame();
@@ -74,67 +81,98 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if (item.getItemId() == R.id.GAME) {
-           startNewGame();
-        } else if (item.getItemId() == R.id.SETTINGS) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
 
-        } else if (item.getItemId() == R.id.ABOUT) {
-            showMyPhoto();
-        } else if (item.getItemId() == R.id.QUIT) {
-            showDialogConfirmation();
-        } else if(item.getItemId() == R.id.HISTORIAL){
-          mostrarUltimaPartida();
+        if (item.getItemId() == R.id.GAME) {
+          startNewGame();
         }
-        return super.onContextItemSelected(item);
+        else if (item.getItemId() == R.id.SETTINGS) {
+        //me llevara a el linear layout de ajustes
+        }
+        else if (item.getItemId() == R.id.ABOUT) {
+            showMyPhoto();
+        }
+        else if (item.getItemId() == R.id.QUIT) {
+            showDialogConfirmation();
+        }
+        else if (item.getItemId() == R.id.HISTORIAL) {
+            mostrarUltimaPartida();
+        }
+        return true;
+    }
+
+    public String showLastResult(){
+        String lastGame = "";
+        String archivo = "lastResults.txt";
+        try{
+            FileInputStream readlastResults = openFileInput(archivo);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(readlastResults));
+                    String linea;
+        while((linea = reader.readLine()) != null ){
+            linea = lastGame;
+        }
+        }catch(IOException ex){
+            Toast.makeText(MainActivity.this,ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        return lastGame;
     }
 
     private void mostrarUltimaPartida() {
+        String ultimaPartida = showLastResult();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Historial ultima partida");
-        //TODO
+        builder.setMessage(ultimaPartida);
+        builder.show();
     }
 
     private void showMyPhoto()
     {
+       //
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View customView = getLayoutInflater().inflate(R.layout.sobremi_layout, null);
+       // Dialog dialog = new Dialog(this);
+        //builder.setContentView(R.layout.sobremi_layout);
         builder.setTitle("Sobre el autor");
-        builder.setMessage("Aplicación hecha por Nayra Rios");
-        //builder.setIcon();
-        //ImageView image = (ImageView)
-            //    dialog.findViewById(R.id.image);
-        //image.setImageResource(R.drawable.ic_launcher);
-        AlertDialog alert= builder.create();
+        TextView text = (TextView)
+                customView.findViewById(R.id.texto_sobremi);
+        builder.setView(customView);
+        text.setText("Aplicación hecha por Nayra Rios");
+        ImageView image = (ImageView)
+                customView.findViewById(R.id.foto);
+        image.setImageResource(R.drawable.gato);
+        AlertDialog alert = builder.create();
         alert.show();
-
     }
     private void showDialogConfirmation() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Salir");
-        builder.setMessage("Estas seguro que quieres salir");
-        builder.setCancelable(false);
-        builder.setPositiveButton("no", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        builder.setNegativeButton("si", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                finishAffinity();
-            }
-        });
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this);
+        builder.setTitle("Títol del Quadre");
+        builder.setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("NO", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finishAffinity(); // Tanca totes les Activities
+
+                    }
+                });
+
         AlertDialog alert = builder.create();
         alert.show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu, menu); // Asegúrate de que el archivo "menu.xml" existe en "res/menu"
         return true;
     }
+
 
 
     private void initializeComponents() {
@@ -353,12 +391,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadMoney() {
-        SharedPreferences prefs = getSharedPreferences("BlackjackPrefs", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("lastResults.txt", Context.MODE_PRIVATE);
         money = prefs.getInt("money", 500);
     }
 
     private void saveMoney() {
-        SharedPreferences prefs = getSharedPreferences("BlackjackPrefs", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("lastResults.txt", Context.MODE_PRIVATE);
         prefs.edit().putInt("money", money).apply();
     }
 

@@ -17,24 +17,21 @@ public class MyServiceNotification extends Service {
     }
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
-
-
         NotificationManager nManager = (NotificationManager)  getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getBaseContext())
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("Bateria baja")
-                .setContentText("Bateria baixa, el telèfon es tancarà aviat, guarda les dades de la teva partida");
-
+                .setContentTitle("MyService")
+                .setContentText("Terminó el servicio!");
 
         //.setWhen(System.currentTimeMillis());//afegir l'hora a la notificació
-        Intent targetIntent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent targetIntent = new Intent(getApplicationContext(), BaterryLow.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0,
                 targetIntent, PendingIntent.FLAG_MUTABLE);
         builder.setContentIntent(contentIntent);
 
         builder.setAutoCancel(true);
-       //nManager.notify(12345, builder.build()); TODO
+        nManager.notify(12345, builder.build());
 
         this.stopSelf();
         return super.onStartCommand(intent, flags, startId);
