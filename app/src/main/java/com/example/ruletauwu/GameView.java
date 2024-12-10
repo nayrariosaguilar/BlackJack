@@ -14,20 +14,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.app.AlertDialog;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,15 +28,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class GameView extends AppCompatActivity {
 
     private TextView playerScoreText, dealerScoreText, moneyText;
     private EditText betValue;
@@ -64,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_principal);
+        setContentView(R.layout.activity_game);
         filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_LOW);
 
@@ -76,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar mytoolbar= (Toolbar) findViewById(R.id.toolbar);
         //using toolbar as ActionBar
         setSupportActionBar(mytoolbar);
-       // startService(new Intent()); TODO
+
 
     }
 
@@ -88,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
           startNewGame();
         }
         else if (item.getItemId() == R.id.SETTINGS) {
-        //me llevara a el linear layout de ajustes
+            irASettings();
         }
         else if (item.getItemId() == R.id.ABOUT) {
             showMyPhoto();
@@ -101,28 +92,36 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
-    public String showLastResult(){
-        String lastGame = "";
-        String archivo = "lastResults.txt";
-        try{
-            FileInputStream readlastResults = openFileInput(archivo);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(readlastResults));
-                    String linea;
-        while((linea = reader.readLine()) != null ){
-            linea = lastGame;
-        }
-        }catch(IOException ex){
-            Toast.makeText(MainActivity.this,ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
-        return lastGame;
+    public void irASettings(){
+        Intent intent = new Intent(this, settings.class);
+        startActivity(intent);
     }
+
+    private String showLastResult() {
+        SharedPreferences prefs = getSharedPreferences("lastResults.txt", Context.MODE_PRIVATE);
+
+        int playerScore = prefs.getInt("playerScore", -1); // -1 como valor predeterminado
+        int dealerScore = prefs.getInt("dealerScore", -1); // -1 como valor predeterminado
+
+        if (playerScore == -1 || dealerScore == -1) {
+            return "No hay partidas registradas.";
+        }
+
+        return "Puntuación del Jugador: " + playerScore + "\n" +
+                "Puntuación de la Banca: " + dealerScore;
+    }
+
 
     private void mostrarUltimaPartida() {
         String ultimaPartida = showLastResult();
+        if (ultimaPartida.isEmpty()) {
+            ultimaPartida = "No hay partidas registradas.";
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Historial ultima partida");
+        builder.setTitle("Historial última partida");
         builder.setMessage(ultimaPartida);
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         builder.show();
     }
 
@@ -290,10 +289,8 @@ public class MainActivity extends AppCompatActivity {
                 )
         );
 
-        // Actualizar el puntaje del dealer con todas las cartas reveladas
-        updateScores();
+       updateScores();
 
-        // Dealer toma cartas si tiene 16 o menos
         while (calculateScore(dealerHand) <= 16 && dealerHand.size() < dealerCardSlots.length) {
             dealerHand.add(drawCard(dealerCardSlots[dealerHand.size()]));
             updateScores();
@@ -304,29 +301,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateDealerVisibleScore() {
         if (!dealerHand.isEmpty()) {
-            // Mostrar solo el valor de la primera carta visible del dealer
-            int visibleScore = dealerHand.get(0)[0];
+          int visibleScore = dealerHand.get(0)[0];
             dealerScoreText.setText(String.valueOf((visibleScore > 10) ? 10 : visibleScore));
         }
     }
 
     private void updateScores() {
-        // Actualizar puntaje del jugador
         String playerScoreTextValue = calculateScoreWithAces(playerHand);
         playerScoreText.setText(playerScoreTextValue);
-
-        // Actualizar puntaje del dealer
         if (!firstDraw) {
-            // Mostrar la puntuación completa del dealer cuando las cartas estén reveladas
-            String dealerScoreTextValue = calculateScoreWithAces(dealerHand);
+           String dealerScoreTextValue = calculateScoreWithAces(dealerHand);
             dealerScoreText.setText(dealerScoreTextValue);
         } else {
-            // Mostrar solo la puntuación de la primera carta del dealer
             updateDealerVisibleScore();
         }
-
-        // Actualizar el dinero
-        moneyText.setText(String.valueOf(money));
+  moneyText.setText(String.valueOf(money));
     }
 
     private String calculateScoreWithAces(List<int[]> hand) {
@@ -391,12 +380,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadMoney() {
-        SharedPreferences prefs = getSharedPreferences("lastResults.txt", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("money.txt", Context.MODE_PRIVATE);
         money = prefs.getInt("money", 500);
     }
 
     private void saveMoney() {
-        SharedPreferences prefs = getSharedPreferences("lastResults.txt", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("money.txt", Context.MODE_PRIVATE);
         prefs.edit().putInt("money", money).apply();
     }
 
@@ -426,7 +415,12 @@ public class MainActivity extends AppCompatActivity {
             endGame("Perdiste");
             money -= bet;
         }
+
         saveMoney();
+        SharedPreferences prefs = getSharedPreferences("lastResults.txt", Context.MODE_PRIVATE);
+        prefs.edit().putInt("playerScore", playerFinalScore).apply();
+        prefs.edit().putInt("dealerScore", dealerFinalScore).apply();
+
     }
 }
 
